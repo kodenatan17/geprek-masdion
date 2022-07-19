@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geprek_masdion/app/controllers/auth_controller.dart';
+import 'package:geprek_masdion/app/modules/home/views/home_view.dart';
 
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -8,6 +10,13 @@ import '../../../routes/app_pages.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {
+  final _formKey = GlobalKey<FormState>();
+
+  String? email;
+  String? password;
+
+  var eyeClosed = true.obs;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,57 +53,99 @@ class LoginView extends GetView<LoginController> {
                 left: kDefaultPadding * 3.5,
                 right: kDefaultPadding * 3.5,
               ),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: controller.nameC,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'User Name',
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'User Name',
+                      ),
+                      validator: ((value) {
+                        if (value!.isEmpty) {
+                          return 'Wajib diisi!';
+                        }
+                        return null;
+                      }),
+                      onSaved: ((newValue) {
+                        email = newValue;
+                      }),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    obscureText: true,
-                    controller: controller.passwordC,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Password',
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Get.toNamed(Routes.FORGOTPASSWORD);
-                    },
-                    child: const Text(
-                      'Lupa Password',
-                    ),
-                  ),
-                  Container(
-                    width: Get.width,
-                    child: ElevatedButton(
-                      child: const Text('Login'),
-                      onPressed: () {},
-                    ),
-                  ),
-                  Row(
-                    children: <Widget>[
-                      const Text('Belum Punya Akun?'),
-                      TextButton(
-                        child: const Text(
-                          'Daftar',
-                          style: TextStyle(fontSize: 20),
+                    Obx(
+                      () => TextFormField(
+                        obscureText: eyeClosed.value,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Password',
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              eyeClosed.value = !eyeClosed.value;
+                            },
+                            icon: eyeClosed.value
+                                ? Icon(Icons.visibility_off)
+                                : Icon(Icons.visibility_off),
+                          ),
                         ),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Get.toNamed(Routes.FORGOTPASSWORD);
+                      },
+                      child: const Text(
+                        'Lupa Password',
+                      ),
+                    ),
+                    Container(
+                      width: Get.width,
+                      child: ElevatedButton(
+                        child: const Text('Login'),
                         onPressed: () {
-                          Get.toNamed(Routes.REGISTER);
+                          if (_formKey.currentState!.validate()) {
+                            _formKey.currentState!.save();
+                          }
+                          AuthController()
+                              .signIn(email: email!, password: password!)
+                              .then((result) {
+                            if (result == null) {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => HomeView()));
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(SnackBar(
+                                content: Text(
+                                  result,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ));
+                            }
+                          });
                         },
-                      )
-                    ],
-                    mainAxisAlignment: MainAxisAlignment.center,
-                  ),
-                ],
+                      ),
+                    ),
+                    Row(
+                      children: <Widget>[
+                        const Text('Belum Punya Akun?'),
+                        TextButton(
+                          child: const Text(
+                            'Daftar',
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          onPressed: () {
+                            Get.toNamed(Routes.REGISTER);
+                          },
+                        )
+                      ],
+                      mainAxisAlignment: MainAxisAlignment.center,
+                    ),
+                  ],
+                ),
               ),
             ),
             Container(
