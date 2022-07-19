@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "332772899485",
+    "project_id": "geprek-masdion",
+    "storage_bucket": "geprek-masdion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:332772899485:android:a349b694f754c9c76db274",
+        "android_client_info": {
+          "package_name": "com.kodenatan.geprekmasdion.geprek_masdion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "332772899485-988speu6grdin72g7e0h8i2pgkplod9v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC--v-yC89gATaBYFjJpzmpbWuGDm5Y8Qg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "332772899485-988speu6grdin72g7e0h8i2pgkplod9v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

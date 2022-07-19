@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geprek_masdion/app/controllers/auth_controller.dart';
 import 'package:geprek_masdion/app/modules/contact/views/contact_view.dart';
 import 'package:geprek_masdion/app/modules/dashboard/views/dashboard_view.dart';
+import 'package:geprek_masdion/app/modules/login/views/login_view.dart';
 import 'package:geprek_masdion/app/modules/menu/views/menu_view.dart';
 import 'package:geprek_masdion/constants.dart';
 
@@ -19,14 +21,23 @@ class HomeView extends GetView<HomeController> {
               IconButton(
                 onPressed: () {},
                 icon: Icon(
-                  Icons.wallet_membership_rounded,
+                  Icons.notifications_active_rounded,
                   color: kDefaultColor,
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  AuthController().singOut().then(
+                        (_) => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LoginView(),
+                          ),
+                        ),
+                      );
+                },
                 icon: Icon(
-                  Icons.notifications_active_rounded,
+                  Icons.person_outline_outlined,
                   color: kDefaultColor,
                 ),
               ),

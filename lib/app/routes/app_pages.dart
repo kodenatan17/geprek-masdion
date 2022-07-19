@@ -37,7 +37,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.REGISTER,
-      page: () => const RegisterView(),
+      page: () => RegisterView(),
       binding: RegisterBinding(),
     ),
     GetPage(
@@ -47,22 +47,22 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.MENU,
-      page: () => const MenuView(),
+      page: () => MenuView(),
       binding: MenuBinding(),
     ),
     GetPage(
       name: _Paths.CONTACT,
-      page: () => const ContactView(),
+      page: () => ContactView(),
       binding: ContactBinding(),
     ),
     GetPage(
       name: _Paths.FORGOTPASSWORD,
-      page: () => const ForgotpasswordView(),
+      page: () => ForgotpasswordView(),
       binding: ForgotpasswordBinding(),
     ),
     GetPage(
       name: _Paths.SIGNUP,
-      page: () => const SignupView(),
+      page: () => SignupView(),
       binding: SignupBinding(),
     ),
   ];
