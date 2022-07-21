@@ -19,9 +19,8 @@ class ContactView extends GetView<ContactController> {
             opacity: 0.4,
           ),
         ),
-        child: Text(
-          'ContactView is working',
-          style: TextStyle(fontSize: 20),
+        child: Column(
+          children: [],
         ),
       ),
     );

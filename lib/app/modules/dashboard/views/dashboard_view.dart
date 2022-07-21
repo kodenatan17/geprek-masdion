@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../controllers/dashboard_controller.dart';
 
 class DashboardView extends GetView<DashboardController> {
+  final c = Get.put(DashboardController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,40 +48,42 @@ class DashboardView extends GetView<DashboardController> {
               height: kDefaultPadding,
             ),
             Obx(
-              () => ListView.builder(
-                itemCount: controller.menus.length,
-                itemBuilder: (context, index) => Card(
-                  color: Colors.white,
-                  child: ListTile(
-                    title: Text(controller.menus[index].name!),
-                    subtitle: Text(controller.menus[index].harga!),
-                    leading: CircleAvatar(
-                      child: Text(
-                        controller.menus[index].name!
-                            .substring(0, 1)
-                            .capitalize!,
-                        style: TextStyle(fontWeight: FontWeight.bold),
+              () => Expanded(
+                child: ListView.builder(
+                  itemCount: c.menus.length,
+                  itemBuilder: (context, index) => Card(
+                    color: Colors.white,
+                    child: ListTile(
+                      title: Text(c.menus[index].name!),
+                      subtitle: Text(c.menus[index].harga!),
+                      leading: CircleAvatar(
+                        child: Text(
+                          c.menus[index].name!
+                              .substring(0, 1)
+                              .capitalize!,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                        backgroundColor: kDefaultColor,
                       ),
-                      backgroundColor: kDefaultColor,
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {
-                        displayDeleteDialog(controller.menus[index].docId!);
+                      trailing: IconButton(
+                        onPressed: () {
+                          displayDeleteDialog(c.menus[index].docId!);
+                        },
+                        icon: Icon(
+                          Icons.delete_forever,
+                          color: Colors.red,
+                        ),
+                      ),
+                      onTap: () {
+                        c.nameC.text = c.menus[index].name!;
+                        c.hargaC.text = c.menus[index].harga!;
+                        _buildAddMenuView(
+                          text: 'UPDATE',
+                          addEditFlag: 2,
+                          docId: c.menus[index].docId!,
+                        );
                       },
-                      icon: Icon(
-                        Icons.delete_forever,
-                        color: Colors.red,
-                      ),
                     ),
-                    onTap: () {
-                      controller.nameC.text = controller.menus[index].name!;
-                      controller.hargaC.text = controller.menus[index].harga!;
-                      _buildAddMenuView(
-                        text: 'UPDATE',
-                        addEditFlag: 2,
-                        docId: controller.menus[index].docId!,
-                      );
-                    },
                   ),
                 ),
               ),

@@ -20,7 +20,7 @@ class DashboardController extends GetxController {
   // XFile? pickedImage = null;
 
   @override
-  void oninit() {
+  void onInit() {
     super.onInit();
     // imagePicker = ImagePicker();
     collRefference = firestore.collection("menus");

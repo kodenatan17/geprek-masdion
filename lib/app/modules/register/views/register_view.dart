@@ -19,6 +19,7 @@ class RegisterView extends GetView<RegisterController> {
   String? name;
 
   var eyeClosed = true.obs;
+  var eyeClosedRe = true.obs;
   bool agree = false;
 
   final pass = new TextEditingController();
@@ -123,7 +124,7 @@ class RegisterView extends GetView<RegisterController> {
                               eyeClosed.value = !eyeClosed.value;
                             },
                             icon: eyeClosed.value
-                                ? Icon(Icons.visibility_off)
+                                ? Icon(Icons.visibility)
                                 : Icon(Icons.visibility_off),
                           ),
                         ),
@@ -132,17 +133,27 @@ class RegisterView extends GetView<RegisterController> {
                     SizedBox(
                       height: 10,
                     ),
-                    TextFormField(
-                      validator: (value) {
-                        if (value != pass.text) {
-                          return 'Password Tidak Sama';
-                        }
-                        return null;
-                      },
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Re-Password',
+                    Obx(
+                      () => TextFormField(
+                        validator: (value) {
+                          if (value != pass.text) {
+                            return 'Password Tidak Sama';
+                          }
+                          return null;
+                        },
+                        obscureText: eyeClosedRe.value,
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(Icons.lock_outline),
+                          border: OutlineInputBorder(),
+                          labelText: 'Re-Password',
+                          suffixIcon: IconButton(
+                              onPressed: () {
+                                eyeClosedRe.value = !eyeClosedRe.value;
+                              },
+                              icon: eyeClosedRe.value
+                                  ? Icon(Icons.visibility)
+                                  : Icon(Icons.visibility_off)),
+                        ),
                       ),
                     ),
                     SizedBox(
