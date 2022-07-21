@@ -43,6 +43,48 @@ class DashboardView extends GetView<DashboardController> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            SizedBox(
+              height: kDefaultPadding,
+            ),
+            Obx(
+              () => ListView.builder(
+                itemCount: controller.menus.length,
+                itemBuilder: (context, index) => Card(
+                  color: Colors.white,
+                  child: ListTile(
+                    title: Text(controller.menus[index].name!),
+                    subtitle: Text(controller.menus[index].harga!),
+                    leading: CircleAvatar(
+                      child: Text(
+                        controller.menus[index].name!
+                            .substring(0, 1)
+                            .capitalize!,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      backgroundColor: kDefaultColor,
+                    ),
+                    trailing: IconButton(
+                      onPressed: () {
+                        displayDeleteDialog(controller.menus[index].docId!);
+                      },
+                      icon: Icon(
+                        Icons.delete_forever,
+                        color: Colors.red,
+                      ),
+                    ),
+                    onTap: () {
+                      controller.nameC.text = controller.menus[index].name!;
+                      controller.hargaC.text = controller.menus[index].harga!;
+                      _buildAddMenuView(
+                        text: 'UPDATE',
+                        addEditFlag: 2,
+                        docId: controller.menus[index].docId!,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -144,6 +186,20 @@ class DashboardView extends GetView<DashboardController> {
           ),
         ),
       ),
+    );
+  }
+  displayDeleteDialog(String docId){
+    Get.defaultDialog(
+      title: "Delete Menu",
+      titleStyle: TextStyle(fontSize: 18),
+      middleText: "Apakah kamu yakin hapus data menu?",
+      textCancel: "Cancel",
+      textConfirm: "Confirm",
+      confirmTextColor: Colors.black,
+      onCancel: (){},
+      onConfirm: (){
+        controller.deleteData(docId);
+      }
     );
   }
 }

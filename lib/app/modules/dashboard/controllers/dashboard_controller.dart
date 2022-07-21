@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geprek_masdion/app/data/menuModel.dart';
 import 'package:get/get.dart';
 
 import '../../../widgets/customFullScreenDialog.dart';
@@ -14,6 +15,7 @@ class DashboardController extends GetxController {
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late CollectionReference collRefference;
+  RxList<MenuModel> menus = RxList<MenuModel>([]);
 
   // XFile? pickedImage = null;
 
@@ -22,6 +24,7 @@ class DashboardController extends GetxController {
     super.onInit();
     // imagePicker = ImagePicker();
     collRefference = firestore.collection("menus");
+    menus.bindStream(getAllMenus());
   }
 
   @override
@@ -96,11 +99,56 @@ class DashboardController extends GetxController {
           backgroundColor: Colors.red,
         );
       });
+    } else if (addEditFlag == 2) {
+      CustomFullScreenDialog.showDialog();
+      collRefference
+          .doc(docId)
+          .update({'name': name, 'harga': harga}).whenComplete(() {
+        CustomFullScreenDialog.cancelDialog();
+        clearEditingControllers();
+        Get.back();
+        CustomSnackBar.showSnackBar(
+            context: Get.context,
+            title: "Menu Updated",
+            message: "Menu Diupdate",
+            backgroundColor: Colors.green);
+      }).catchError((error) {
+        CustomFullScreenDialog.cancelDialog();
+        CustomSnackBar.showSnackBar(
+            context: Get.context,
+            title: "Error",
+            message: "Terjadi Kesalahan",
+            backgroundColor: Colors.red);
+      });
     }
   }
 
   void clearEditingControllers() {
     nameC.clear();
     hargaC.clear();
+  }
+
+  Stream<List<MenuModel>> getAllMenus() => collRefference.snapshots().map(
+      (query) => query.docs.map((item) => MenuModel.fromMap(item)).toList());
+
+  void deleteData(String docId) {
+    CustomFullScreenDialog.showDialog();
+    collRefference.doc(docId).delete().whenComplete(() {
+      CustomFullScreenDialog.cancelDialog();
+      clearEditingControllers();
+      Get.back();
+      CustomSnackBar.showSnackBar(
+          context: Get.context,
+          title: "Menu Dihapus",
+          message: "Berhasil menghapus menu",
+          backgroundColor: Colors.green);
+    }).catchError((error) {
+      CustomFullScreenDialog.cancelDialog();
+      CustomSnackBar.showSnackBar(
+          context: Get.context,
+          title: "Error",
+          message: "Terjadi Kesalahan",
+          backgroundColor: Colors.red);
+    });
   }
 }
