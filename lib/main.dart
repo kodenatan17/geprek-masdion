@@ -17,10 +17,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      title: "Application",
+      title: "Geprek Mas Dion",
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
-    );
+    ); 
 
     //   // title: "Geprek Mas Dion",
     //   // initialRoute: Routes.HOME,
