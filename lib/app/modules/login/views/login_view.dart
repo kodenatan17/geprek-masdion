@@ -78,6 +78,15 @@ class LoginView extends GetView<LoginController> {
                     Obx(
                       () => TextFormField(
                         obscureText: eyeClosed.value,
+                        validator: ((value) {
+                          if (value!.isEmpty) {
+                            return 'Wajib diisi!';
+                          }
+                          return null;
+                        }),
+                        onSaved: ((newValue) {
+                          password = newValue;
+                        }),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: 'Password',
