@@ -64,7 +64,7 @@ class HomeView extends GetView<HomeController> {
                   text: 'Home',
                 ),
                 Tab(
-                  text: 'Menu',
+                  text: 'Member',
                 ),
                 Tab(
                   text: 'Contact',
